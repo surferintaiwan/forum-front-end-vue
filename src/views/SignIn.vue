@@ -72,9 +72,5 @@ export default {
             console.log('data', data)
         }
     }
-    
-
-    
-  
 }
 </script>>
