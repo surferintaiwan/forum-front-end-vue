@@ -9,6 +9,9 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'root',
+  },{
     path: '/signin',
     name: 'sign-in',
     component: SignIn
@@ -46,7 +49,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  linkExactActiveClass: 'active',
+  routes: routes
 })
 
 export default router
