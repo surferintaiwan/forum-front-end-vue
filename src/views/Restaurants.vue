@@ -2,10 +2,10 @@
   <div class="container py-5">
     <NavTabs />
     <!-- 餐廳類別標籤 RestaurantsNavPills -->
-
+    <RestaurantsNavPills v-bind:categories="categories"/>
     <div class="row">
       <!-- 餐廳卡片 RestaurantCard-->
-      <RestaurantCard v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:initial-restaurant="restaurant"/>
+    <RestaurantCard v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:initial-restaurant="restaurant"/>
     </div>
 
     <!-- 分頁標籤 RestaurantPagination -->
@@ -278,6 +278,8 @@ const dummyData = {
 }
 import NavTabs from '../components/NavTabs'
 import RestaurantCard from '../components/RestaurantCard'
+import RestaurantsNavPills from '../components/RestaurantsNavPills'
+
 
 export default {
   name: 'Restaurants',
@@ -295,7 +297,8 @@ export default {
   },
   components: {
     NavTabs,
-    RestaurantCard
+    RestaurantCard,
+    RestaurantsNavPills
   },
   methods: {
     fetchRestaurants: function() {
