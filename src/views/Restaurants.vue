@@ -9,6 +9,7 @@
     </div>
 
     <!-- 分頁標籤 RestaurantPagination -->
+    <RestaurantsPagination v-bind:category-id="categoryId" v-bind:current-page="currentPage" v-bind:total-page="totalPage"/>
   </div>
 </template>
 
@@ -279,7 +280,7 @@ const dummyData = {
 import NavTabs from '../components/NavTabs'
 import RestaurantCard from '../components/RestaurantCard'
 import RestaurantsNavPills from '../components/RestaurantsNavPills'
-
+import RestaurantsPagination from '../components/RestaurantsPagination'
 
 export default {
   name: 'Restaurants',
@@ -298,7 +299,8 @@ export default {
   components: {
     NavTabs,
     RestaurantCard,
-    RestaurantsNavPills
+    RestaurantsNavPills,
+    RestaurantsPagination
   },
   methods: {
     fetchRestaurants: function() {
@@ -309,6 +311,5 @@ export default {
       this.totalPage = dummyData.totalPage.length
     }
   }
-
 }
 </script>

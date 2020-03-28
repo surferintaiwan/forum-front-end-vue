@@ -7,7 +7,7 @@
       <div v-for="restaurant in restaurants" v-bind:key="restaurant.id">
         <h4>
           <a href="#">{{restaurant.name}}</a>
-          <small>{{ }}</small>
+          <small>{{ restaurant.Category? restaurant.Category.name : 'No Data' }}</small>
         </h4>
         <p>{{restaurant.description}}</p>
         {{restaurant.createdAt | fromNow}}
@@ -33,6 +33,6 @@ export default {
       type: Array,
       required: true
     }
-  },
+  }
 }
 </script>

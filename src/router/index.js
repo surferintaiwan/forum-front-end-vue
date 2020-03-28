@@ -11,7 +11,13 @@ const routes = [
   {
     path: '/',
     name: 'root',
-  },{
+  },
+  {
+    path: '/restaurants',
+    name: 'resturants',
+    component: Restaurants
+  },
+  {
     path: '/signin',
     name: 'sign-in',
     component: SignIn
@@ -21,11 +27,7 @@ const routes = [
     name: 'sign-up',
     component: SignUp
   },
-  {
-    path: '/restaurants',
-    name: 'resturants',
-    component: Restaurants
-  },
+  
   {
     path: '/restaurants/feeds',
     name: 'restaurants-feeds',
