@@ -5,7 +5,7 @@
 
     <div class="row">
       <!-- 餐廳卡片 RestaurantCard-->
-      <RestaurantsCard v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:initial-restaurant="restaurant"/>
+      <RestaurantCard v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:initial-restaurant="restaurant"/>
     </div>
 
     <!-- 分頁標籤 RestaurantPagination -->
@@ -277,7 +277,7 @@ const dummyData = {
     "next": 2 
 }
 import NavTabs from '../components/NavTabs'
-import RestaurantsCard from '../components/RestaurantsCard'
+import RestaurantCard from '../components/RestaurantCard'
 
 export default {
   name: 'Restaurants',
@@ -295,7 +295,7 @@ export default {
   },
   components: {
     NavTabs,
-    RestaurantsCard
+    RestaurantCard
   },
   methods: {
     fetchRestaurants: function() {
