@@ -11,11 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'root',
-  },
-  {
-    path: '/restaurants',
-    name: 'resturants',
-    component: Restaurants
+    redirect: '/restaurants'
   },
   {
     path: '/signin',
@@ -27,7 +23,11 @@ const routes = [
     name: 'sign-up',
     component: SignUp
   },
-  
+  {
+    path: '/restaurants',
+    name: 'resturants',
+    component: Restaurants
+  },
   {
     path: '/restaurants/feeds',
     name: 'restaurants-feeds',
@@ -37,6 +37,11 @@ const routes = [
     path: '/restaurants/top',
     name: 'restaurants-top',
     component: () => import('../views/RestaurantsTop.vue')
+  },
+  {
+    path:'/restaurants/:id',
+    name: 'restaurant',
+    component: () => import('../views/Restaurant.vue')
   },
   {
     path: '/users/top',
