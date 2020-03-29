@@ -10,6 +10,7 @@
           v-if="currentUser.isAdmin"
           type="button"
           class="btn btn-danger float-right"
+          v-on:click.stop.prevent="handleDeleteButtonClick(comment.id)"
         >
           Delete
         </button>
@@ -52,6 +53,14 @@ export default {
     data: function() {
         return {
             currentUser: dummyUser.currentUser
+        }
+    },
+    methods: {
+        handleDeleteButtonClick (commentId) {
+            console.log('handleDeleteButtonClick', commentId)
+            // TODO: 請求 API 伺服器刪除 id 為 commentId的評論
+            // 觸發父層事件 - $emit('事件名稱', commentId)
+            this.$emit('after-delete-comment', commentId)
         }
     }
 }
