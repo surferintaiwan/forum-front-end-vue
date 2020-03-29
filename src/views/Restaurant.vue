@@ -2,9 +2,10 @@
   <div class="container py-5">
     <h1>餐廳描述頁</h1>
     <!-- 餐廳資訊頁 RestaurantDetail -->
-    <RestaurantDetail v-bind:initial-restaurant="restaurant"/>
+    <RestaurantDetail v-bind:initial-restaurant="restaurant" />
     <hr>
     <!-- 餐廳評論 RestaurantComments -->
+    <RestaurantComments v-bind:restaurant-comments="restaurantComments" />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -224,6 +225,7 @@ const dummyData = {
     "isLiked": true
 }
 import RestaurantDetail from '../components/RestaurantDetail'
+import RestaurantComments from '../components/RestaurantComments'
 export default {
     data: function() {
         return {
@@ -266,7 +268,8 @@ export default {
         }
     },
     components: {
-        RestaurantDetail
+        RestaurantDetail,
+        RestaurantComments
     }
 }
 </script>

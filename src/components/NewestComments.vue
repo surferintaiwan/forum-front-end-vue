@@ -22,20 +22,13 @@
 </template>
 
 <script>
-import moment from 'moment'
+import fromNowFilter from '../utils/mixins'
 export default {
+    mixins: [fromNowFilter],
     props: {
         comments: {
             type: Array,
             required: true
-        }
-    },
-    filters: {
-        fromNow: function(dateTime) {
-            if (!dateTime) {
-                return '-'
-            }
-            return moment(dateTime).fromNow()
         }
     }
 }
