@@ -6,6 +6,7 @@
     <hr>
     <!-- 餐廳評論 RestaurantComments -->
     <RestaurantComments v-bind:restaurant-comments="restaurantComments" v-on:after-delete-comment="afterDeleteComment" />
+    <CreateComment v-bind:restaurant-id="restaurant.id" v-on:after-create-comment="afterCreateComment"/>
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -224,8 +225,21 @@ const dummyData = {
     "isFavorited": true,
     "isLiked": true
 }
+
+const dummyUser = {
+    currentUser: {
+        "id": 1,
+        "name": "root",
+        "email": "root@example.com",
+        "image": null,
+        "isAdmin": true
+    }
+}
+
 import RestaurantDetail from '../components/RestaurantDetail'
 import RestaurantComments from '../components/RestaurantComments'
+import CreateComment from '../components/CreateComment'
+
 export default {
     data: function() {
         return {
@@ -241,7 +255,8 @@ export default {
                 isFavorited: false,
                 isLiked: false
             },
-            restaurantComments: []
+            restaurantComments: [],
+            currentUser: dummyUser.currentUser
         }
     },
     created: function() {
@@ -271,11 +286,26 @@ export default {
             this.restaurantComments = this.restaurantComments.filter(
                 comment => comment.id !== commentId
             )
+        },
+        afterCreateComment (payload) {
+            const {commentId, restaurantId, text} = payload
+            this.restaurantComments.push({
+                id: commentId,
+                RestaurantId: restaurantId,
+                User: {
+                    id: this.currentUser.id,
+                    name: this.currentUser.name
+                },
+                text: text,
+                createdAt: new Date()
+            })
+            console.log(payload)
         }
     },
     components: {
         RestaurantDetail,
-        RestaurantComments
+        RestaurantComments,
+        CreateComment
     }
 }
 </script>
