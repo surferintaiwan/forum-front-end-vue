@@ -4,6 +4,7 @@ import SignIn from '../views/SignIn.vue'
 import SignUp from '../views/SignUp.vue'
 import Restaurants from '../views/Restaurants.vue'
 import NotFound from '../views/NotFound.vue'
+import User from '../views/User.vue'
 
 Vue.use(VueRouter)
 
@@ -48,12 +49,16 @@ const routes = [
     name: 'restaurant-dashboard',
     component: () => import('../views/RestaurantDashboard.vue')
   }
-  
   ,
   {
     path: '/users/top',
     name: 'users-top',
     component: () => import('../views/UsersTop.vue')
+  },
+  {
+    path: '/users/:id',
+    name: 'userDetail',
+    component: User
   },
   {
     path: '*',
