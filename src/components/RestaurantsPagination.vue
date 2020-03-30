@@ -10,7 +10,7 @@
       
       <!-- 頁碼 -->
       <li v-for="page in totalPage" :key="page" class="page-item" :class="['page-item', { active: currentPage === page }]">
-        <router-link class="page-link" v-bind:to="{query: {categoryId, page}}">
+        <router-link class="page-link" v-bind:to="{name: 'restaurants', query: {categoryId, page}}">
           {{ page }}
         </router-link>
       </li>

@@ -25,7 +25,7 @@ const routes = [
   },
   {
     path: '/restaurants',
-    name: 'resturants',
+    name: 'restaurants',
     component: Restaurants
   },
   {
@@ -43,6 +43,13 @@ const routes = [
     name: 'restaurant',
     component: () => import('../views/Restaurant.vue')
   },
+  {
+    path:'/restaurants/:id/dashboard',
+    name: 'restaurant-dashboard',
+    component: () => import('../views/RestaurantDashboard.vue')
+  }
+  
+  ,
   {
     path: '/users/top',
     name: 'users-top',
