@@ -48,8 +48,7 @@ const routes = [
     path:'/restaurants/:id/dashboard',
     name: 'restaurant-dashboard',
     component: () => import('../views/RestaurantDashboard.vue')
-  }
-  ,
+  },
   {
     path: '/users/top',
     name: 'users-top',
@@ -57,8 +56,13 @@ const routes = [
   },
   {
     path: '/users/:id',
-    name: 'userDetail',
+    name: 'user-detail',
     component: User
+  },
+  {
+    path: '/users/:id/edit',
+    name: 'user-edit',
+    component: () => import('../views/UserEdit.vue')
   },
   {
     path: '/admin',
@@ -79,6 +83,11 @@ const routes = [
     path: '/admin/restaurants/:id',
     name: 'admin-restaurant',
     component: () => import('../views/AdminRestaurant.vue')
+  },
+  {
+    path: '/admin/restaurants/:id/edit',
+    name: 'admin-restaurant-edit',
+    component: () => import('../views/AdminRestaurantEdit.vue')
   },
   {
     path: '*',

@@ -37,10 +37,12 @@
             Show
           </router-link>
 
-          <a
-            href="#"
+          <router-link 
+            to=""
             class="btn btn-link"
-          >Edit</a>
+          >
+            Edit
+          </router-link>
 
           <button
             v-on:click.stop.prevent="deleteRestaurant(restaurant.id)"

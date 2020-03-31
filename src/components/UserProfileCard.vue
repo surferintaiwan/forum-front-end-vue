@@ -15,7 +15,7 @@
                         <li><strong> {{profile.Followers.length}} </strong> followers (追隨者)</li>
                     </ul>
                     <form action="/following/3?_method=DELETE" method="POST" style="display: contents;">
-                        <router-link to="#" v-if="verifyEditButton" class="btn btn-primary"> Edit </router-link>
+                        <router-link v-bind:to="{name: 'user-edit', params: {id: profile.id}}" v-if="verifyEditButton" class="btn btn-primary"> Edit </router-link>
                         <template v-else>
                             <button v-if="isFollowed" v-on:click.stop.prevent="deleteFollow" type="submit" class="btn btn-danger">取消追蹤</button>
                             <button v-else v-on:click.stop.prevent="addFollow" type="submit" class="btn btn-primary">加入追蹤</button>

@@ -140,8 +140,28 @@ const dummyData = {
 }
 
 export default {
+    props: {
+        initialRestaurant: {
+            type: Object,
+            default: function() {
+                return {
+                    name: '',
+                    categoryId: '',
+                    tel: '',
+                    address: '',
+                    description: '',
+                    image: '',
+                    openingHours: ''
+                }
+            }
+        }
+    },
     created: function() {
         this.fetchCategories()
+        this.restaurant = {
+            ...this.restaurant,
+            ...this.initialRestaurant
+        }
     },
     data: function() {
         return {
