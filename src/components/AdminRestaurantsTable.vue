@@ -43,6 +43,7 @@
           >Edit</a>
 
           <button
+            v-on:click.stop.prevent="deleteRestaurant(restaurant.id)"
             type="button"
             class="btn btn-link"
           >
@@ -927,6 +928,11 @@ export default {
   methods: {
     fetchRestaurants () {
       this.restaurants = dummyData.restaurants
+    },
+    deleteRestaurant(restaurantId) {
+        this.restaurants = this.restaurants.filter(restaurant => {
+            return restaurant.id !== restaurantId
+        })
     }
   }
 }
