@@ -53,16 +53,42 @@
             {{ category.id }}
           </th>
           <td class="position-relative">
-            <div class="category-name">
+            <div 
+                v-show="!category.isEditing" 
+                class="category-name"
+            >
               {{ category.name }}
             </div>
+            <input 
+                v-show="category.isEditing"
+                v-model="category.name"
+                type="text"
+                class="form-control"
+            >
+            <span
+                v-show="category.isEditing"
+                class="cancel"
+                v-on:click="handleCancel(category.id)"
+            >
+            X
+            </span>
           </td>
           <td class="d-flex justify-content-between">
             <button
+              v-show="!category.isEditing"
               type="button"
               class="btn btn-link mr-2"
+              v-on:click.stop.prevent="toggleIsEditing(category.id)"
             >
               Edit
+            </button>
+            <button
+                v-show="category.isEditing"
+                type="button"
+                class="btn tbn-link mr-2"
+                v-on:click.stop.prevent="updateCategory({categoryId: category.id, name: category.name})"
+            >
+                Save
             </button>
             <button
               type="button"
@@ -129,7 +155,11 @@ export default {
   methods: {
     // 4. 定義 `fetchCategories` 方法，把 `dummyData` 帶入 Vue 物件
     fetchCategories () {
-      this.categories = dummyData.categories
+      // 在每一個 category 中都添加一個 isEditing 屬性
+      this.categories = dummyData.categories.map(category => ({
+        ...category,
+        isEditing: false
+      }))
     },
     createCategory() {
         this.categories.push({
@@ -142,7 +172,62 @@ export default {
         this.categories = this.categories.filter(
            category => category.id !== categoryId 
         )
+    },
+    toggleIsEditing(categoryId) {
+        this.categories = this.categories.map(category => {
+            if (category.id !== categoryId) return category
+             // 如果迴圈中的 category.id 是欲修改的 categoryId 則改變 isEditing 的值
+             return {
+                 ...category,
+                 nameCached: category.name,
+                 isEditing: !category.isEditing
+             }
+        })
+    },
+    updateCategory({categoryId, name}) {
+        console.log(name)
+        this.toggleIsEditing(categoryId)
+    },
+    handleCancel(categoryId) {
+        this.categories = this.categories.map(category => {
+            if (category.id !== categoryId) return category
+            return {
+                ...category,
+                name:  category.nameCached,
+            }
+        })
+        this.toggleIsEditing(categoryId)
     }
   }
 }
 </script>
+
+<style scoped>
+.category-name {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  outline: 0;
+  cursor: auto;
+}
+
+.btn-link {
+  width: 62px;
+}
+
+.cancel {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #aaaaaa;
+  border-radius: 50%;
+  user-select: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+</style>
