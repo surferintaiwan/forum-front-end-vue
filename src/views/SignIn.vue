@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import authorizationAPI from '../apis/authorization'
 export default {
     name: "SignIn",
     data: function() {
@@ -65,11 +66,18 @@ export default {
     },
     methods: {
         handleSubmit() {
-            const data = JSON.stringify({
-                email: this.email,
-                password: this.password
+            authorizationAPI.signIn({
+              email: this.email,
+              password: this.password
+            }).then(response => {
+              console.log('response', response)
+              const {data} = response
+              // 將token存放在localstorage
+              localStorage.setItem('token', data.token)
+
+              // 成功登入後轉址到餐廳首頁
+              this.$router.push('/restaurants')
             })
-            console.log('data', data)
         }
     }
 }
