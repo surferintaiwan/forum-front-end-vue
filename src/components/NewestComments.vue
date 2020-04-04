@@ -7,7 +7,7 @@
       <div v-for="comment in comments" v-bind:key="comment.id">
         <h4>
           <a href="#">
-            {{comment.Restaurant}}
+            {{comment.Restaurant? comment.Restaurant.name: 'No data'}}
           </a>
         </h4>
         <p>{{comment.text}}</p>by
