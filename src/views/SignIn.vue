@@ -37,6 +37,7 @@
       <button
         class="btn btn-lg btn-primary btn-block mb-3"
         type="submit"
+        v-bind:disabled="isProcessing"
       >
         Submit
       </button>
@@ -62,43 +63,70 @@ export default {
     data: function() {
         return {
         email: '',
-        password: ''
+        password: '',
+        isProcessing: false
         }
     },
     methods: {
-        handleSubmit() {
-            // 如果email或password為空，則使用Toast提示
-            // 然後就return不往後執行
-            if(!this.email || !this.password) {
-              Toast.fire({
-                type: 'warning',
-                title: '請填入email和password'
-              })
-              return
-            }
+        async handleSubmit() {
+            this.isProcessing = true
+              try {
+                // 如果email或password為空，則使用Toast提示
+                // 然後就return不往後執行
+                if(!this.email || !this.password) {
+                  Toast.fire({
+                    type: 'warning',
+                    title: '請填入email和password'
+                  })
+                  return
+                }
+                
+                console.log(this.password)
+                let response = await authorizationAPI.signIn({email: this.email, password: this.password})
+                console.log('response', response)
+                const {data} = response
+                // 將token存放在localstorage
+                localStorage.setItem('token', data.token)
 
-            authorizationAPI.signIn({
-              email: this.email,
-              password: this.password
-            }).then(response => {
-              console.log('response', response)
-              const {data} = response
-              // 將token存放在localstorage
-              localStorage.setItem('token', data.token)
+                // 成功登入後轉址到餐廳首頁
+                this.$router.push('/restaurants')
+              } catch(error) {
+                this.password = ''
 
-              // 成功登入後轉址到餐廳首頁
-              this.$router.push('/restaurants')
-            }).catch(error => {
-              // 把密碼欄位清空
-              this.password = ''
-
-              // 顯示錯誤提示
-              Toast.fire({
+                // 顯示錯誤提示
+                Toast.fire({
                 type: 'warning',
                 title: '您輸入的帳號密碼錯誤'
-              })
-              console.log('error', error)            
-            })
+                })
+                // 因為登入失敗，所以要把按鈕狀態還原
+                this.isProcessing = false
+                console.log('error', error)      
+              }
+
+            // authorizationAPI.signIn({
+            //   email: this.email,
+            //   password: this.password
+            // }).then(response => {
+            //   console.log('response', response)
+            //   const {data} = response
+            //   // 將token存放在localstorage
+            //   localStorage.setItem('token', data.token)
+
+            //   // 成功登入後轉址到餐廳首頁
+            //   this.$router.push('/restaurants')
+            // }).catch(error => {
+            //   // 把密碼欄位清空
+            //   this.password = ''
+
+            //   // 顯示錯誤提示
+            //   Toast.fire({
+            //     type: 'warning',
+            //     title: '您輸入的帳號密碼錯誤'
+            //   })
+            //   // 因為登入失敗，所以要把按鈕狀態還原
+            //   this.isProcessing = false
+            //   console.log('error', error)            
+            // })
         }
     }
 }
