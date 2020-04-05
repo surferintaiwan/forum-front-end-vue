@@ -44,7 +44,7 @@ export default {
     // created會在首次進入/restaurants時執行
     // 如果確實是從/restaurants進入，我們有給了預設值，page = 1, categoryId= ''，讓他去API抓資料
     // 但如果是從其他頁面如/restaurants進入，就是透過網址列上query抓下來，接著去API要資料
-    const {page , categoryId} = this.$route.query
+    const {page = 1 , categoryId = ''} = this.$route.query
     this.fetchRestaurants({page, categoryId});
   },
   components: {
@@ -54,7 +54,6 @@ export default {
     RestaurantsPagination
   },
   beforeRouteUpdate: function(to, from, next) {
-      
       const {page = 1, categoryId = ''} = to.query
       this.fetchRestaurants({page, categoryId})
       next()
@@ -67,6 +66,7 @@ export default {
           page,
           categoryId
         });
+        console.log(response)
         // 從API要到的資料用解構賦值拆解出來
         const {data, statusText} = response
         // 如果不是OK的，就會送錯誤訊息去給catch接住

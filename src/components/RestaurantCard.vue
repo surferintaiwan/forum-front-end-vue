@@ -24,7 +24,7 @@
           v-if="restaurant.isFavorited"
           type="button"
           class="btn btn-danger btn-border favorite mr-2"
-          v-on:click.stop.prevent="deleteFavorite"
+          v-on:click.stop.prevent="deleteFavorite(restaurant.id)"
         >
           移除最愛
         </button>
@@ -32,7 +32,7 @@
           v-else
           type="button"
           class="btn btn-primary btn-border favorite mr-2"
-          v-on:click.stop.prevent="addFavorite"
+          v-on:click.stop.prevent="addFavorite(restaurant.id)"
         >
           加到最愛
         </button>
@@ -40,7 +40,7 @@
           v-if="restaurant.isLiked"
           type="button"
           class="btn btn-danger like mr-2"
-          v-on:click.stop.prevent="deleteLike"
+          v-on:click.stop.prevent="deleteLike(restaurant.id)"
         >
           Unlike
         </button>
@@ -48,7 +48,7 @@
           v-else
           type="button"
           class="btn btn-primary like mr-2"
-          v-on:click.stop.prevent="addLike"
+          v-on:click.stop.prevent="addLike(restaurant.id)"
         >
           Like
         </button>
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import usersAPI from '../apis/users'
+import {Toast} from '../utils/helpers'
 export default {
     props: {
         initialRestaurant: {
@@ -71,25 +73,81 @@ export default {
         }
     },
     methods: {
-      addFavorite() {
-        this.restaurant = {
-          ...this.restaurant,
-          isFavorited: true
+      async addFavorite(restaurantId) {
+        try {
+          const response = await usersAPI.addFavorite({restaurantId})
+          const {data, statusText} = response
+          if (statusText !== 'OK' || data.status !== 'success') {
+            throw new Error(statusText)
+          }
+          this.restaurant = {
+            ...this.restaurant,
+            isFavorited: true
+          }
+        } catch(error) {
+          Toast.fire({
+            type: 'error',
+            title: '無法將餐廳加入最愛，請稍後再試'
+          })
         }
       },
-      deleteFavorite() {
-        this.restaurant = {
-          ...this.restaurant,
-          isFavorited: false
+      async deleteFavorite(restaurantId) {
+        try {
+          const response = await usersAPI.deleteFavorite({restaurantId})
+          const {data, statusText} = response     
+          if (data.status !== 'success' || statusText !== 'OK') {
+            throw new Error('statusText')
+          }
+          this.restaurant = {
+            ...this.restaurant,
+            isFavorited: false
+          }
+        } catch(error) {
+          Toast.fire({
+            type: 'error',
+            title: '無法將餐廳從最愛移除，請稍後再試'
+          })
+          console.log(error)
         }
       },
-      addLike() {
-        this.restaurant = {
-          ...this.restaurant,
-          isLiked: true
+      async addLike(restaurantId) {
+        try {
+          const response = await usersAPI.addLike({restaurantId})
+          const {data, statusText} = response
+          if (data.status !== 'success' || statusText !== 'OK') {
+            throw new Error(statusText)
+          }
+          this.restaurant = {
+            ...this.restaurant,
+            isLiked: true
+          }
+        } catch(error) {
+          Toast.fire({
+            type: 'error',
+            title: '無法將餐廳加入Like，請稍後再試'
+          })
+          console.log(error)
         }
       },
-      deleteLike() {
+      async deleteLike(restaurantId) {
+        try {
+          const response = await usersAPI.deleteLike({restaurantId})
+          const {data, statusText} = response
+          if (data.status !== 'success' || statusText !== 'OK') {
+            throw new Error(statusText)
+          }
+          this.restaurant = {
+            ...this.restaurant,
+            isLiked: false
+          }
+        } catch(error) {
+          Toast.fire({
+            type: 'error',
+            title: '無法將餐廳從Like移除，請稍後再試'
+          })
+          console.log(error)
+        }
+        
         this.restaurant = {
           ...this.restaurant,
           isLiked: false
