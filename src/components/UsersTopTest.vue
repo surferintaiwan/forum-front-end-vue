@@ -14,7 +14,7 @@
             v-if="user.isFollowed"
             type="button"
             class="btn btn-danger"
-            v-on:click.stop.prevent="unFollow"
+            v-on:click.stop.prevent="unFollow(user.id)"
           >
             取消追蹤
           </button>
@@ -22,7 +22,7 @@
             v-else
             type="button"
             class="btn btn-primary"
-            v-on:click.stop.prevent="follow"
+            v-on:click.stop.prevent="follow(user.id)"
           >
             追蹤
           </button>
@@ -31,6 +31,9 @@
 </template>
 
 <script>
+import usersAPI from '../apis/users'
+import {Toast} from '../utils/helpers'
+
 export default {
   props: {
     initialUser: {
@@ -44,11 +47,37 @@ export default {
     }
   },
   methods: {
-    follow() {
-      this.initialUser.isFollowed = true
+    async follow(userId) {
+      try {
+        const response = await usersAPI.addFollowing({userId})
+        const {statusText} = response
+        if (statusText !== 'OK') {
+          throw new Error(statusText)
+        }
+        this.user.isFollowed = true
+        this.user.FollowerCount += 1
+      } catch(error) {
+        Toast.fire({
+          type: 'error',
+          title: '無法加入追蹤'
+        })
+      }
     },
-    unFollow() {
-      this.initialUser.isFollowed = false
+    async unFollow(userId) {
+      try {
+        const response = await usersAPI.deleteFollowing({userId})
+        const {statusText} = response
+        if (statusText !== 'OK') {
+          throw new Error(statusText)
+        }
+        this.user.isFollowed = false
+        this.user.FollowerCount = this.user.FollowerCount - 1
+      } catch(error) {
+        Toast.fire({
+          type: 'error',
+          title: '無法取消追蹤'
+        })
+      }
     }
   }
 
