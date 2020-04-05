@@ -1,5 +1,5 @@
 <template>
-  <form v-on:submit.stop.prevent="handleSubmit">
+  <form v-show="!isLoading" v-on:submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -104,40 +104,14 @@
       type="submit"
       class="btn btn-primary"
     >
-      送出
+      {{isProcessing ? "處理中..." : "送出"}}
     </button>
   </form>
 </template>
 
 <script>
-const dummyData = {
-  categories: [
-    {
-      id: 1,
-      name: '中式料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 2,
-      name: '日本料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 3,
-      name: '義大利料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 4,
-      name: '墨西哥料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    }
-  ]
-}
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
 
 export default {
     props: {
@@ -154,6 +128,10 @@ export default {
                     openingHours: ''
                 }
             }
+        },
+        isProcessing: {
+          type: Boolean,
+          default: false
         }
     },
     created: function() {
@@ -174,12 +152,28 @@ export default {
                 image: '',
                 openingHours: ''
             },
-            catrgories: []
+            categories: [],
+            isLoading: true
         }
     },
     methods: {
-        fetchCategories() {
-            this.categories = dummyData.categories
+        async fetchCategories() {
+            try {
+              const response = await adminAPI.categories.get()
+              const {data, statusText} = response
+              if (statusText !== 'OK') {
+                throw new Error(statusText)
+              }
+              this.isLoading = false
+              this.categories = data.categories
+            } catch(error) {
+              Toast.fire({
+                type: 'error',
+                title: '無法獲取餐廳類別'
+              })
+              console.log(error)
+            }
+
         },
         handleFileChange(event) {
             const files = event.target.files
@@ -189,6 +183,20 @@ export default {
             this.restaurant.image = imageURL
         },
         handleSubmit(event) {
+            if (this.restaurant.name) {
+              Toast.fire({
+                type: 'warning',
+                title: '請填寫餐廳名稱'
+              })
+              return
+            } else if (!this.restaurant.categoryId) {
+              Toast.fire({
+                type: 'warning',
+                title: '請選擇餐廳類別'
+              })
+              return
+            }
+            
             const form = event.target
             const formData = new FormData(form)
             this.$emit('after-submit', formData)
