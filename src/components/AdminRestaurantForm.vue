@@ -107,6 +107,7 @@
       {{isProcessing ? "處理中..." : "送出"}}
     </button>
   </form>
+
 </template>
 
 <script>
@@ -141,6 +142,14 @@ export default {
             ...this.initialRestaurant
         }
     },
+    watch: {
+      initialRestaurant(restaurant) {
+        this.restaurant = {
+          ...this.restaurant,
+          ...restaurant
+        }
+      }
+    },
     data: function() {
         return {
             restaurant: {
@@ -153,7 +162,7 @@ export default {
                 openingHours: ''
             },
             categories: [],
-            isLoading: true
+            isLoading: true,
         }
     },
     methods: {
@@ -173,7 +182,6 @@ export default {
               })
               console.log(error)
             }
-
         },
         handleFileChange(event) {
             const files = event.target.files
@@ -183,7 +191,7 @@ export default {
             this.restaurant.image = imageURL
         },
         handleSubmit(event) {
-            if (this.restaurant.name) {
+            if (!this.restaurant.name) {
               Toast.fire({
                 type: 'warning',
                 title: '請填寫餐廳名稱'
