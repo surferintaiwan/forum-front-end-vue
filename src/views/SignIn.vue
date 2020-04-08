@@ -87,7 +87,9 @@ export default {
                 const {data} = response
                 // 將token存放在localstorage
                 localStorage.setItem('token', data.token)
-
+                
+                // 把資料傳進vuex裡的mutation的setCurrentUser
+                this.$store.commit('setCurrentUser', data.user)
                 // 成功登入後轉址到餐廳首頁
                 this.$router.push('/restaurants')
               } catch(error) {
@@ -102,31 +104,6 @@ export default {
                 this.isProcessing = false
                 console.log('error', error)      
               }
-
-            // authorizationAPI.signIn({
-            //   email: this.email,
-            //   password: this.password
-            // }).then(response => {
-            //   console.log('response', response)
-            //   const {data} = response
-            //   // 將token存放在localstorage
-            //   localStorage.setItem('token', data.token)
-
-            //   // 成功登入後轉址到餐廳首頁
-            //   this.$router.push('/restaurants')
-            // }).catch(error => {
-            //   // 把密碼欄位清空
-            //   this.password = ''
-
-            //   // 顯示錯誤提示
-            //   Toast.fire({
-            //     type: 'warning',
-            //     title: '您輸入的帳號密碼錯誤'
-            //   })
-            //   // 因為登入失敗，所以要把按鈕狀態還原
-            //   this.isProcessing = false
-            //   console.log('error', error)            
-            // })
         }
     }
 }
