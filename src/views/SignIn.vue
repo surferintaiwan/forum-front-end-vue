@@ -81,16 +81,16 @@ export default {
                   return
                 }
                 
-                console.log(this.password)
                 let response = await authorizationAPI.signIn({email: this.email, password: this.password})
                 console.log('response', response)
                 const {data} = response
                 // 將token存放在localstorage
                 localStorage.setItem('token', data.token)
-                
+
                 // 把資料傳進vuex裡的mutation的setCurrentUser
                 this.$store.commit('setCurrentUser', data.user)
                 // 成功登入後轉址到餐廳首頁
+               
                 this.$router.push('/restaurants')
               } catch(error) {
                 this.password = ''
